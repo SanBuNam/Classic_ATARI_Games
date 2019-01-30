@@ -1,16 +1,20 @@
 var ctx = document.getElementById("ctx").getContext("2d");
 
-var square = {
-  width: 200,
-  height: 200,
-  x: 100,
-  y: 200,
-  color: "red"
+var WIDTH = 500;
+var HEIGHT = 500;
+ctx.font = "20px Calibri";
+
+var snakeBody = {
+  width: 20,
+  height: 20
 };
 
-ctx.save();
+var food = {
+  width: 20,
+  height: 20
+};
 
-ctx.fillStyle = square.color;
-ctx.fillRect(square.x, square.y, square.width, square.height);
-
-ctx.restore();
+startGame = function() {
+  snakeList = [{ x: 220, y: 200 }, { x: 210, y: 200 }, { x: 200, y: 200 }];
+  foodList = [];
+};
