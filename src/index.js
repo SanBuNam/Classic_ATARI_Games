@@ -1,10 +1,16 @@
 var ctx = document.getElementById("ctx").getContext("2d");
-ctx.font = "60px Calibri";
-ctx.strokeText("Hello World", 250, 250);
 
-ctx.moveTo(100, 300);
-ctx.lineTo(300, 400);
-ctx.stroke();
+var square = {
+  width: 200,
+  height: 200,
+  x: 100,
+  y: 200,
+  color: "red"
+};
 
-ctx.fillStyle = "#fec385";
-ctx.fillRect(300, 400, 150, 50);
+ctx.save();
+
+ctx.fillStyle = square.color;
+ctx.fillRect(square.x, square.y, square.width, square.height);
+
+ctx.restore();
