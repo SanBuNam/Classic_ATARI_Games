@@ -2,7 +2,7 @@ var ctx = document.getElementById("ctx").getContext("2d");
 
 var WIDTH = 500;
 var HEIGHT = 500;
-var snakeList, foodList, direction;
+var snakeList, foodList, direction, eaten;
 ctx.font = "20px Calibri";
 
 var snakeBody = {
@@ -20,16 +20,12 @@ var food = {
 document.onkeydown = function(event) {
   if (event.keyCode == 37) {
     direction = 0;
-    console.log("0");
   } else if (event.keyCode == 38) {
     direction = 1;
-    console.log("1");
   } else if (event.keyCode == 39) {
     direction = 2;
-    console.log("2");
   } else if (event.keyCode == 40) {
     direction = 3;
-    console.log("3");
   }
 };
 
@@ -47,7 +43,7 @@ drawSnake = function(sb, i) {
 drawFood = function(f, i) {
   ctx.save();
   ctx.fillStyle = food.color;
-  ctx.fillRect = (f.x, f.y, food.width, food.height);
+  ctx.fillRect(f.x, f.y, food.width, food.height);
   ctx.restore();
 };
 
@@ -85,12 +81,41 @@ updateSnakeList = function() {
   }
 };
 
+checkSnakePosition = function() {
+  if (snakeList[0].x > 500) {
+    snakeList[0].x = 0;
+  }
+  if (snakeList[0].x < 0) {
+    snakeList[0].x = 500;
+  }
+  if (snakeList[0].y > 500) {
+    snakeList[0].y = 0;
+  }
+  if (snakeList[0].y < 0) {
+    snakeList[0].y = 500;
+  }
+};
+
+updateSnakePosition = function() {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  while (eaten) {
+    var pos_x = Math.random() * 485 + 5;
+    var pos_y = Math.random() * 485 + 5;
+    foodList[0] = { x: pos_x, y: pos_y };
+    eaten = false;
+  }
+  foodList.forEach(drawFood);
+  snakeList.forEach(drawSnake);
+  checkSnakePosition();
+  updateSnakeList();
+};
+
 startGame = function() {
   snakeList = [{ x: 220, y: 200 }, { x: 210, y: 200 }, { x: 200, y: 200 }];
   foodList = [];
   direction = 99;
-
-  snakeList.forEach(drawSnake);
+  eaten = true;
+  setInterval(updateSnakePosition, 20);
 };
 
 startGame();
