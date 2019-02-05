@@ -47,6 +47,15 @@ drawFood = function(f, i) {
   ctx.restore();
 };
 
+testCollision = function(rect1, rect2) {
+  return (
+    rect1.x <= rect2.x + food.width &&
+    rect2.x <= rect1.x + snakeBody.width &&
+    rect1.y <= rect2.y + food.width &&
+    rect2.y <= rect1.y + snakeBody.height
+  );
+};
+
 updateSnakeList = function() {
   for (var i = snakeList.length - 1; i >= 0; i--) {
     if (direction == 0) {
@@ -106,6 +115,26 @@ updateSnakePosition = function() {
   }
   foodList.forEach(drawFood);
   snakeList.forEach(drawSnake);
+
+  if (testCollision(snakeList[0], foodList[0])) {
+    foodList = [];
+    eaten = true;
+    var new_X, new_Y;
+    if (direction == 0) {
+      new_X = snakeList[0].x - 10;
+      new_Y = snakeList[0].y;
+    } else if (direction == 1) {
+      new_X = snakeList[0].x;
+      new_Y = snakeList[0].y - 10;
+    } else if (direction == 2) {
+      new_X = snakeList[0].x + 10;
+      new_Y = snakeList[0].y;
+    } else if (direction == 3) {
+      new_X = snakeList[0].x;
+      new_Y = snakeList[0].y + 10;
+    }
+    snakeList.unshift({ x: new_X, y: new_Y });
+  }
   checkSnakePosition();
   updateSnakeList();
 };
