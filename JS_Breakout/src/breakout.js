@@ -7,7 +7,9 @@ var ball = {
   x: 0,
   y: 0,
   radius: 5,
-  color: "blue"
+  color: "blue",
+  spdX: -5,
+  spdY: -5
 };
 
 var base = {
@@ -69,9 +71,21 @@ updateBasePosition = function() {
   }
 };
 
+updateBallPosition = function() {
+  ball.x += ball.spdX;
+  ball.y += ball.spdY;
+  if (ball.x > WIDTH || ball.x < 0) {
+    ball.spdX = -ball.spdX;
+  }
+  if (ball.y > HEIGHT || ball.y < 0) {
+    ball.spdY = -ball.spdY;
+  }
+};
+
 update = function() {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   updateBasePosition();
+  updateBallPosition();
   drawBall();
   drawBase();
 };
