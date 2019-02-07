@@ -15,7 +15,9 @@ var base = {
   y: 400,
   height: 20,
   width: 100,
-  color: "red"
+  color: "red",
+  pressingLeft: false,
+  pressingRight: false
 };
 
 drawBall = function() {
@@ -28,11 +30,43 @@ drawBall = function() {
   ctx.restore();
 };
 
+document.onkeydown = function(event) {
+  if (event.keyCode == 37) {
+    base.pressingLeft = true;
+    base.pressingRight = false;
+  } else if (event.keyCode == 39) {
+    base.pressingLeft = false;
+    base.pressingRight = true;
+  }
+};
+
+document.onkeyup = function(event) {
+  if (event.keyCode == 37) {
+    base.pressingLeft = false;
+  } else if (event.keyCode == 39) {
+    base.pressingRight = false;
+  }
+};
+
 drawBase = function() {
   ctx.save();
   ctx.fillStyle = base.color;
   ctx.fillRect(base.x, base.y, base.width, base.height);
   ctx.restore();
+};
+
+updateBasePosition = function() {
+  if (base.pressingLeft) {
+    base.x = base.x - 5;
+  } else if (base.pressingRight) {
+    base.x = base.x + 5;
+  }
+  if (base.x < 0) {
+    base.x = 0;
+  }
+  if (base.x > WIDTH - base.width) {
+    base.x = WIDTH - base.width;
+  }
 };
 
 startGame = function() {
