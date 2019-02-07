@@ -69,12 +69,18 @@ updateBasePosition = function() {
   }
 };
 
+update = function() {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  updateBasePosition();
+  drawBall();
+  drawBase();
+};
+
 startGame = function() {
   base.x = 150;
   ball.x = base.x + 100;
   ball.y = base.y - 100;
-  drawBall();
-  drawBase();
+  setInterval(update, 20);
 };
 
 startGame();
