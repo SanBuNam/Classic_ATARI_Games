@@ -7,7 +7,7 @@ var ball = {
   x: 0,
   y: 0,
   radius: 5,
-  color: "blue",
+  color: "red",
   spdX: -5,
   spdY: -5
 };
@@ -17,19 +17,9 @@ var base = {
   y: 400,
   height: 20,
   width: 100,
-  color: "red",
+  color: "navy",
   pressingLeft: false,
   pressingRight: false
-};
-
-drawBall = function() {
-  ctx.save();
-  ctx.fillStyle = ball.color;
-  ctx.beginPath();
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
-  ctx.fill();
-  ctx.restore();
 };
 
 document.onkeydown = function(event) {
@@ -50,6 +40,24 @@ document.onkeyup = function(event) {
   }
 };
 
+testCollision = function(base, ball) {
+  return (
+    base.x < ball.x + ball.radius &&
+    ball.x < base.x + base.width &&
+    base.y < ball.y + ball.radius &&
+    ball.y < base.y + base.height
+  );
+};
+
+drawBall = function() {
+  ctx.save();
+  ctx.fillStyle = ball.color;
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.restore();
+};
+
 drawBase = function() {
   ctx.save();
   ctx.fillStyle = base.color;
@@ -57,7 +65,7 @@ drawBase = function() {
   ctx.restore();
 };
 
-updateBasePosition = function() {
+updateBarPosition = function() {
   if (base.pressingLeft) {
     base.x = base.x - 5;
   } else if (base.pressingRight) {
@@ -84,10 +92,13 @@ updateBallPosition = function() {
 
 update = function() {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  updateBasePosition();
-  updateBallPosition();
   drawBall();
   drawBase();
+  if (testCollision(base, ball)) {
+    ball.spdY = -ball.spdY;
+  }
+  updateBarPosition();
+  updateBallPosition();
 };
 
 startGame = function() {
