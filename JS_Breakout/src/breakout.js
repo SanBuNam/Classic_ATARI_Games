@@ -1,6 +1,7 @@
 var ctx = document.getElementById("ctx").getContext("2d");
 var WIDTH = 500;
 var HEIGHT = 500;
+var numOfTiles, tileList;
 ctx.font = "20px Calibri";
 
 var ball = {
@@ -20,6 +21,12 @@ var base = {
   color: "navy",
   pressingLeft: false,
   pressingRight: false
+};
+
+var tile = {
+  height: 20,
+  width: 40,
+  color: "green"
 };
 
 document.onkeydown = function(event) {
@@ -49,6 +56,15 @@ testCollision = function(base, ball) {
   );
 };
 
+testCollisionTile = function(t, ball) {
+  return (
+    t.x < ball.x + 2 * ball.radius &&
+    ball.x < t.x + tile.width &&
+    t.y < ball.y + 2 * ball.radius &&
+    ball.y < t.y + tile.height
+  );
+};
+
 drawBall = function() {
   ctx.save();
   ctx.fillStyle = ball.color;
@@ -62,6 +78,13 @@ drawBase = function() {
   ctx.save();
   ctx.fillStyle = base.color;
   ctx.fillRect(base.x, base.y, base.width, base.height);
+  ctx.restore();
+};
+
+drawTile = function(t, i) {
+  ctx.save();
+  ctx.fillStyle = tile.color;
+  ctx.fillRect(t.x, t.y, tile.width, tile.height);
   ctx.restore();
 };
 
@@ -92,11 +115,21 @@ updateBallPosition = function() {
 
 update = function() {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  tileList.forEach(drawTile);
   drawBall();
   drawBase();
+
   if (testCollision(base, ball)) {
     ball.spdY = -ball.spdY;
   }
+
+  for (key in tileList) {
+    if (testCollisionTile(tileList[key], ball)) {
+      delete tileList[key];
+      ball.spdY = -ball.spdY;
+    }
+  }
+
   updateBarPosition();
   updateBallPosition();
 };
@@ -105,6 +138,19 @@ startGame = function() {
   base.x = 150;
   ball.x = base.x + 100;
   ball.y = base.y - 100;
+  numOfTiles = 0;
+  var tileX = 5;
+  var tileY = 5;
+  tileList = [];
+  for (var i = 1; i <= 6; i++) {
+    tileX = 5;
+    for (var j = 1; j <= 11; j++) {
+      tileList[numOfTiles] = { x: tileX, y: tileY };
+      numOfTiles++;
+      tileX += 45;
+    }
+    tileY += 25;
+  }
   setInterval(update, 20);
 };
 
