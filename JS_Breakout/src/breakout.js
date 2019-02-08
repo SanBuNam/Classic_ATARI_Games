@@ -20,7 +20,8 @@ var base = {
   width: 100,
   color: "navy",
   pressingLeft: false,
-  pressingRight: false
+  pressingRight: false,
+  lives: 3
 };
 
 var tile = {
@@ -108,8 +109,12 @@ updateBallPosition = function() {
   if (ball.x > WIDTH || ball.x < 0) {
     ball.spdX = -ball.spdX;
   }
-  if (ball.y > HEIGHT || ball.y < 0) {
+  if (ball.y < 0) {
     ball.spdY = -ball.spdY;
+  }
+  if (ball.y > HEIGHT) {
+    ball.spdY = -ball.spdY;
+    base.lives--;
   }
 };
 
@@ -132,6 +137,7 @@ update = function() {
   }
 
   ctx.fillText("Score: " + score, 5, 490);
+  ctx.fillText("Lives: " + base.lives, 430, 490);
 
   updateBarPosition();
   updateBallPosition();
@@ -146,6 +152,7 @@ startGame = function() {
   var tileY = 5;
   tileList = [];
   score = 0;
+  base.lives = 3;
   for (var i = 1; i <= 6; i++) {
     tileX = 5;
     for (var j = 1; j <= 11; j++) {
