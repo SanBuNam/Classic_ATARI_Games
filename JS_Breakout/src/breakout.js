@@ -1,7 +1,7 @@
 var ctx = document.getElementById("ctx").getContext("2d");
 var WIDTH = 500;
 var HEIGHT = 500;
-var numOfTiles, tileList, score, intervalVar, running;
+var numOfTiles, tileList, score, intervalVar, running, hitCount;
 ctx.font = "20px Calibri";
 ctx.fillText("Click me to start the game", 150, 250);
 
@@ -116,12 +116,27 @@ updateBallPosition = function() {
   ball.x += ball.spdX;
   ball.y += ball.spdY;
   if (ball.x > WIDTH || ball.x < 0) {
+    hitCount++;
+    if (hitCount % 10 == 0) {
+      if (ball.spdX < 0) ball.spdX = -(Math.abs(ball.spdX) + 1);
+      else ball.spdX += 1;
+    }
     ball.spdX = -ball.spdX;
   }
   if (ball.y < 0) {
+    hitCount++;
+    if (hitCount % 10 == 0) {
+      if (ball.spdY < 0) ball.spdY = -(Math.abs(ball.spdY) + 1);
+      else ball.spdY += 1;
+    }
     ball.spdY = -ball.spdY;
   }
   if (ball.y > HEIGHT) {
+    hitCount++;
+    if (hitCount % 10 == 0) {
+      if (ball.spdY < 0) ball.spdY = -(Math.abs(ball.spdY) + 1);
+      else ball.spdY += 1;
+    }
     ball.spdY = -ball.spdY;
     base.lives--;
   }
@@ -169,6 +184,7 @@ startGame = function() {
   var tileY = 5;
   score = 0;
   base.lives = 3;
+  hitCount = 0;
   tileList = [];
   running = true;
   for (var i = 1; i <= 6; i++) {
