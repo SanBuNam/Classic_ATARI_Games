@@ -7,6 +7,7 @@ var background = new Image();
 var blood = new Image();
 var tile = new Image();
 var food = new Image();
+
 var score = 0;
 var level = 100;
 var animation = 0;
@@ -64,6 +65,16 @@ background.onload = function() {
                     catcher.spd = 5;
                     catcher.rightPressed = true;
                   }
+                  if (
+                    event.keyCode == 38 &&
+                    !catcher.onair &&
+                    catcher.y == 350
+                  ) {
+                    if (!catcher.onair) {
+                      catcher.jump = 100;
+                      catcher.onair = true;
+                    }
+                  }
                 };
 
                 document.onkeyup = function(event) {
@@ -72,6 +83,25 @@ background.onload = function() {
                   }
                   if (event.keyCode == 39) {
                     catcher.rightPressed = false;
+                  }
+                };
+
+                jump = function() {
+                  // Moving up
+                  if (catcher.jump > 0 && catcher.onair) {
+                    catcher.y -= catcher.jumpUnit;
+                    catcher.jump -= catcher.jumpUnit;
+                  }
+                  if (
+                    catcher.jump <= 0 &&
+                    catcher.jump > -100 &&
+                    catcher.onair
+                  ) {
+                    catcher.y += catcher.jumpUnit;
+                    catcher.jump -= catcher.jumpUnit;
+                  }
+                  if (catcher.jump <= -100 && catcher.onair) {
+                    catcher.onair = false;
                   }
                 };
 
@@ -118,6 +148,7 @@ background.onload = function() {
                   }
 
                   updateCatcherPosition();
+                  jump();
                 };
 
                 startGame = function() {
