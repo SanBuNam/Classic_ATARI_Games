@@ -86,6 +86,32 @@ background.onload = function() {
                   }
                 };
 
+                food_catcher_collision = function(f) {
+                  return (
+                    f.x < catcher.x + catcher.width &&
+                    catcher.x < f.x + foodObject.width &&
+                    f.y < catcher.y + catcher.height &&
+                    catcher.y < f.y + foodObject.height
+                  );
+                };
+
+                food_tile_collision = function(f, t) {
+                  return (
+                    f.x < t.x + tileObject.width &&
+                    t.x < f.x + foodObject.width &&
+                    f.y < t.y + tileObject.height &&
+                    t.y < f.y + foodObject.height
+                  );
+                };
+
+                catcher_tile_collision = function(t) {
+                  return (
+                    catcher.x <= t.x + tileObject.width &&
+                    t.x <= catcher.x + catcher.width &&
+                    catcher.y + catcher.height <= t.y
+                  );
+                };
+
                 jump = function() {
                   // Moving up
                   if (catcher.jump > 0 && catcher.onair) {
