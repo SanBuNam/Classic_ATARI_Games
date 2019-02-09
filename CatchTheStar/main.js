@@ -52,9 +52,9 @@ background.onload = function() {
           catcherFour.onload = function() {
             food.onload = function() {
               tile.onload = function() {
-                drawObject = function(object,x,y,width,height) {
-                  ctx.drawImage(object,x,y,width,height);
-                }
+                drawObject = function(object, x, y, width, height) {
+                  ctx.drawImage(object, x, y, width, height);
+                };
 
                 document.onkeydown = function(event) {
                   if (event.keyCode == 37 && catcher.x > 0) {
@@ -65,13 +65,17 @@ background.onload = function() {
                     catcher.spd = 5;
                     catcher.rightPressed = true;
                   }
-                  if (event.keyCode == 38 && !catcher.onair && catcher.y== 350) {
+                  if (
+                    event.keyCode == 38 &&
+                    !catcher.onair &&
+                    catcher.y == 350
+                  ) {
                     if (!catcher.onair) {
                       catcher.jump = 100;
                       catcher.onair = true;
                     }
                   }
-                }
+                };
 
                 document.onkeyup = function(event) {
                   if (event.keyCode == 37) {
@@ -80,28 +84,33 @@ background.onload = function() {
                   if (event.keyCode == 39) {
                     catcher.rightPressed = false;
                   }
-                }
+                };
 
                 food_catcher_collision = function(f) {
-                  return ((f.x < catcher.x + catcher.width) &&
-                      (catcher.x < f.x + foodObject.width) &&
-                      (f.y < catcher.y + catcher.height) &&
-                      (catcher.y < f.y + foodObject.height));
-                }
+                  return (
+                    f.x < catcher.x + catcher.width &&
+                    catcher.x < f.x + foodObject.width &&
+                    f.y < catcher.y + catcher.height &&
+                    catcher.y < f.y + foodObject.height
+                  );
+                };
 
-                food_tile_collision = function(f,t) {
-                  return ((f.x < t.x + tileObject.width) &&
-                      (t.x < f.x + foodObject.width) &&
-                      (f.y < t.y + tileObject.height) &&
-                      (t.y < f.y + foodObject.height));
-                }
+                food_tile_collision = function(f, t) {
+                  return (
+                    f.x < t.x + tileObject.width &&
+                    t.x < f.x + foodObject.width &&
+                    f.y < t.y + tileObject.height &&
+                    t.y < f.y + foodObject.height
+                  );
+                };
 
                 catcher_tile_collision = function(t) {
-                  return ((catcher.x <= t.x + tileObject.width) &&
-                      (t.x <= catcher.x + catcher.width) &&
-                      (catcher.y + catcher.height <= t.y));
-                }
-
+                  return (
+                    catcher.x <= t.x + tileObject.width &&
+                    t.x <= catcher.x + catcher.width &&
+                    catcher.y + catcher.height <= t.y
+                  );
+                };
 
                 jump = function() {
                   // Moving up
@@ -109,25 +118,28 @@ background.onload = function() {
                     catcher.y -= catcher.jumpUnit;
                     catcher.jump -= catcher.jumpUnit;
                   }
-                  if (catcher.jump <= 0 && catcher.jump > -100 && catcher.onair) {
+                  if (
+                    catcher.jump <= 0 &&
+                    catcher.jump > -100 &&
+                    catcher.onair
+                  ) {
                     catcher.y += catcher.jumpUnit;
                     catcher.jump -= catcher.jumpUnit;
                   }
                   if (catcher.jump <= -100 && catcher.onair) {
                     catcher.onair = false;
                   }
-                }
+                };
 
                 updateFoodPosition = function() {
-                  for(var i in foodList) {
+                  for (var i in foodList) {
                     if (foodList[i].y > 500) {
-                      foodList.splice(i,1);
-                    }
-                    else {
+                      foodList.splice(i, 1);
+                    } else {
                       foodList[i].y += foodObject.spd;
                     }
                   }
-                }
+                };
 
                 updateCatcherPosition = function() {
                   if (catcher.leftPressed && catcher.x > 0) {
@@ -137,51 +149,98 @@ background.onload = function() {
                     catcher.x += catcher.spd;
                   }
                   if (catcher.y > 450) {
+                    gameover = true;
                     catcher.y = 450;
                   }
-                }
+                };
+
+                gameOver = function() {
+                  ctx.save();
+                  ctx.globalAlpha = 0.6;
+                  drawObject(blood, 100, 100, 300, 300);
+                  ctx.globalAlpha = 1.0;
+                  ctx.strokeStyle = "#FFFFFF";
+                  ctx.font = "30px Calibri";
+                  ctx.strokeText("Game Over", 180, 200);
+                  ctx.strokeText("Click to restart", 160, 250);
+                  ctx.restore();
+                  clearInterval(intervalVar);
+                };
 
                 updatePosition = function() {
-                  ctx.clearRect(0,0,500,500);
-                  ctx.drawImage(background,0,0,500,500);
+                  ctx.clearRect(0, 0, 500, 500);
+                  ctx.drawImage(background, 0, 0, 500, 500);
                   foodTimer++;
-                  if (foodTimer>level){
-                    foodList.push({'x':foodDrop[Math.round(Math.random()*9)],'y':0});
+                  if (foodTimer > level) {
+                    foodList.push({
+                      x: foodDrop[Math.round(Math.random() * 9)],
+                      y: 0
+                    });
                     foodTimer = 0;
                   }
 
-                  if (catcher.onair) {
-                    drawObject(catcherFour,catcher.x,catcher.y,catcher.width,catcher.height);
-                  }
-                  else if (animation == 0) {
-                    drawObject(catcherOne,catcher.x,catcher.y,catcher.width,catcher.height);
+                  if (gameover) {
+                    drawObject(catcherThree, catcher.x, 470, 50, 30);
+                    gameOver();
+                  } else if (catcher.onair) {
+                    drawObject(
+                      catcherFour,
+                      catcher.x,
+                      catcher.y,
+                      catcher.width,
+                      catcher.height
+                    );
+                  } else if (animation == 0) {
+                    drawObject(
+                      catcherOne,
+                      catcher.x,
+                      catcher.y,
+                      catcher.width,
+                      catcher.height
+                    );
                     animation = 1;
-                    }
-                  else if (animation == 1) {
-                    drawObject(catcherTwo,catcher.x,catcher.y,catcher.width,catcher.height);
+                  } else if (animation == 1) {
+                    drawObject(
+                      catcherTwo,
+                      catcher.x,
+                      catcher.y,
+                      catcher.width,
+                      catcher.height
+                    );
                     animation = 0;
                   }
 
                   for (var i in foodList) {
-                    drawObject(food,foodList[i].x,foodList[i].y,foodObject.width,foodObject.height);
+                    drawObject(
+                      food,
+                      foodList[i].x,
+                      foodList[i].y,
+                      foodObject.width,
+                      foodObject.height
+                    );
                   }
 
-                  for(var i=0;i<tileList.length;i++) {
-                    drawObject(tile,tileList[i].x,tileList[i].y,tileObject.width,tileObject.height);
+                  for (var i = 0; i < tileList.length; i++) {
+                    drawObject(
+                      tile,
+                      tileList[i].x,
+                      tileList[i].y,
+                      tileObject.width,
+                      tileObject.height
+                    );
                   }
 
                   for (var i in foodList) {
                     if (food_catcher_collision(foodList[i])) {
                       score++;
-                      if (score % 2 == 0)
-                        level--;
-                      foodList.splice(i,1);
+                      if (score % 2 == 0) level--;
+                      foodList.splice(i, 1);
                     }
                   }
                   for (var i in foodList) {
                     for (var j in tileList) {
-                      if (food_tile_collision(foodList[i],tileList[j])) {
-                        tileList.splice(j,1);
+                      if (food_tile_collision(foodList[i], tileList[j])) {
+                        tileList.splice(j, 1);
                       }
                     }
                   }
@@ -199,16 +258,16 @@ background.onload = function() {
                     }
                   }
 
-                  drawObject(food,440,10,20,20);
+                  drawObject(food, 440, 10, 20, 20);
                   ctx.fillStyle = "#FFFFFF";
                   ctx.font = "20px Calibri";
-                  ctx.fillText(score,465,27);
-                  ctx.fillText("Level "+(100-level+1),10,27);
+                  ctx.fillText(score, 465, 27);
+                  ctx.fillText("Level " + (100 - level + 1), 10, 27);
 
                   updateFoodPosition();
                   updateCatcherPosition();
                   jump();
-                }
+                };
 
                 startGame = function() {
                   score = 0;
@@ -225,13 +284,12 @@ background.onload = function() {
                   tileList = [];
                   foodList = [];
 
-                  for (var i=0;i<=9;i++) {
-                    tileList.push({'x':i*50,'y':400});
+                  for (var i = 0; i <= 9; i++) {
+                    tileList.push({ x: i * 50, y: 400 });
                   }
 
-                  intervalVar = setInterval(updatePosition,10); // 100 fps game
-
-                }
+                  intervalVar = setInterval(updatePosition, 10); // 100 fps game
+                };
 
                 startGame();
               };
