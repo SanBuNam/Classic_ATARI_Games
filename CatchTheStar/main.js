@@ -105,6 +105,10 @@ background.onload = function() {
                       catcher.onair = true;
                     }
                   }
+                  if (event.keyCode == 32) {
+                    if (paused) paused = false;
+                    else paused = true;
+                  }
                 };
 
                 document.onkeyup = function(event) {
@@ -143,6 +147,7 @@ background.onload = function() {
                 };
 
                 jump = function() {
+                  // Moving up
                   if (catcher.jump > 0 && catcher.onair) {
                     catcher.y -= catcher.jumpUnit;
                     catcher.jump -= catcher.jumpUnit;
@@ -198,106 +203,114 @@ background.onload = function() {
                 };
 
                 updatePosition = function() {
-                  ctx.clearRect(0, 0, 500, 500);
-                  ctx.drawImage(background, 0, 0, 500, 500);
-                  foodTimer++;
-                  if (foodTimer > level) {
-                    foodList.push({
-                      x: foodDrop[Math.round(Math.random() * 9)],
-                      y: 0
-                    });
-                    foodTimer = 0;
-                  }
-
-                  if (gameover) {
-                    drawObject(catcherThree, catcher.x, 470, 50, 30);
-                    gameOver();
-                  } else if (catcher.onair) {
-                    drawObject(
-                      catcherFour,
-                      catcher.x,
-                      catcher.y,
-                      catcher.width,
-                      catcher.height
-                    );
-                  } else if (animation == 0) {
-                    drawObject(
-                      catcherOne,
-                      catcher.x,
-                      catcher.y,
-                      catcher.width,
-                      catcher.height
-                    );
-                    animation = 1;
-                  } else if (animation == 1) {
-                    drawObject(
-                      catcherTwo,
-                      catcher.x,
-                      catcher.y,
-                      catcher.width,
-                      catcher.height
-                    );
-                    animation = 0;
-                  }
-
-                  for (var i in foodList) {
-                    drawObject(
-                      food,
-                      foodList[i].x,
-                      foodList[i].y,
-                      foodObject.width,
-                      foodObject.height
-                    );
-                  }
-
-                  for (var i = 0; i < tileList.length; i++) {
-                    drawObject(
-                      tile,
-                      tileList[i].x,
-                      tileList[i].y,
-                      tileObject.width,
-                      tileObject.height
-                    );
-                  }
-
-                  for (var i in foodList) {
-                    if (food_catcher_collision(foodList[i])) {
-                      score++;
-                      eatingSound.play();
-                      if (score % 2 == 0) level--;
-                      foodList.splice(i, 1);
+                  if (!paused) {
+                    ctx.clearRect(0, 0, 500, 500);
+                    ctx.drawImage(background, 0, 0, 500, 500);
+                    foodTimer++;
+                    if (foodTimer > level) {
+                      foodList.push({
+                        x: foodDrop[Math.round(Math.random() * 9)],
+                        y: 0
+                      });
+                      foodTimer = 0;
                     }
-                  }
-                  for (var i in foodList) {
-                    for (var j in tileList) {
-                      if (food_tile_collision(foodList[i], tileList[j])) {
-                        tileList.splice(j, 1);
+
+                    if (gameover) {
+                      drawObject(catcherThree, catcher.x, 470, 50, 30);
+                      gameOver();
+                    } else if (catcher.onair) {
+                      drawObject(
+                        catcherFour,
+                        catcher.x,
+                        catcher.y,
+                        catcher.width,
+                        catcher.height
+                      );
+                    } else if (animation == 0) {
+                      drawObject(
+                        catcherOne,
+                        catcher.x,
+                        catcher.y,
+                        catcher.width,
+                        catcher.height
+                      );
+                      animation = 1;
+                    } else if (animation == 1) {
+                      drawObject(
+                        catcherTwo,
+                        catcher.x,
+                        catcher.y,
+                        catcher.width,
+                        catcher.height
+                      );
+                      animation = 0;
+                    }
+
+                    for (var i in foodList) {
+                      drawObject(
+                        food,
+                        foodList[i].x,
+                        foodList[i].y,
+                        foodObject.width,
+                        foodObject.height
+                      );
+                    }
+
+                    for (var i = 0; i < tileList.length; i++) {
+                      drawObject(
+                        tile,
+                        tileList[i].x,
+                        tileList[i].y,
+                        tileObject.width,
+                        tileObject.height
+                      );
+                    }
+
+                    for (var i in foodList) {
+                      if (food_catcher_collision(foodList[i])) {
+                        score++;
+                        eatingSound.play();
+                        if (score % 2 == 0) level--;
+                        foodList.splice(i, 1);
                       }
                     }
-                  }
-
-                  if (!catcher.onair) {
-                    for (var i in tileList) {
-                      if (catcher_tile_collision(tileList[i])) {
-                        catcher.safe = true;
-                        break;
+                    for (var i in foodList) {
+                      for (var j in tileList) {
+                        if (food_tile_collision(foodList[i], tileList[j])) {
+                          tileList.splice(j, 1);
+                        }
                       }
-                      catcher.safe = false;
                     }
-                    if (!catcher.safe) {
-                      catcher.y += catcher.gravity;
+
+                    if (!catcher.onair) {
+                      for (var i in tileList) {
+                        if (catcher_tile_collision(tileList[i])) {
+                          catcher.safe = true;
+                          break;
+                        }
+                        catcher.safe = false;
+                      }
+                      if (!catcher.safe) {
+                        catcher.y += catcher.gravity;
+                      }
                     }
+
+                    drawObject(food, 440, 10, 20, 20);
+                    ctx.fillStyle = "#FFFFFF";
+                    ctx.font = "20px Calibri";
+                    ctx.fillText(score, 465, 27);
+                    ctx.fillText("Level " + (100 - level + 1), 10, 27);
+
+                    updateFoodPosition();
+                    updateCatcherPosition();
+                    jump();
+                  } else {
+                    ctx.save();
+                    ctx.strokeStyle = "#FFFFFF";
+                    ctx.font = "30px Calibri";
+                    ctx.strokeText("Game Paused", 165, 250);
+                    ctx.restore();
                   }
-
-                  drawObject(food, 440, 10, 20, 20);
-                  ctx.fillStyle = "#FFFFFF";
-                  ctx.font = "20px Calibri";
-                  ctx.fillText(score, 465, 27);
-                  ctx.fillText("Level " + (100 - level + 1), 10, 27);
-
-                  updateFoodPosition();
-                  updateCatcherPosition();
-                  jump();
                 };
 
                 startGame = function() {
@@ -311,6 +324,7 @@ background.onload = function() {
                   catcher.safe = true;
                   animation = 0;
                   foodTimer = 0;
+                  paused = false;
                   gameover = false;
                   tileList = [];
                   foodList = [];
@@ -319,7 +333,7 @@ background.onload = function() {
                     tileList.push({ x: i * 50, y: 400 });
                   }
 
-                  intervalVar = setInterval(updatePosition, 10);
+                  intervalVar = setInterval(updatePosition, 10); // 100 fps game
                 };
               };
               tile.src = "images/tile.png";
