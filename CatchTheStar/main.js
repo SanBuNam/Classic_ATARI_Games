@@ -52,8 +52,20 @@ background.onload = function() {
           catcherFour.onload = function() {
             food.onload = function() {
               tile.onload = function() {
+                ctx.drawImage(background, 0, 0, 500, 500);
+                ctx.strokeStyle = "#FFFFFF";
+                ctx.font = "30px Calibri";
+                ctx.strokeText("Click here to start the game", 80, 250);
+
                 drawObject = function(object, x, y, width, height) {
                   ctx.drawImage(object, x, y, width, height);
+                };
+
+                document.getElementById("ctx").onmousedown = function() {
+                  if (!gameover) {
+                    clearInterval(intervalVar);
+                  }
+                  startGame();
                 };
 
                 document.onkeydown = function(event) {
@@ -290,8 +302,6 @@ background.onload = function() {
 
                   intervalVar = setInterval(updatePosition, 10); // 100 fps game
                 };
-
-                startGame();
               };
               tile.src = "images/tile.png";
             };
