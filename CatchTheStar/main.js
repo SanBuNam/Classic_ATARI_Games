@@ -52,7 +52,25 @@ background.onload = function() {
           catcherFour.onload = function() {
             food.onload = function() {
               tile.onload = function() {
-                // Game Area
+                startGame = function() {
+                  score = 0;
+                  level = 100;
+                  catcher.y = 350;
+                  catcher.x = 100;
+                  catcher.onair = false;
+                  catcher.leftPressed = false;
+                  catcher.rightPressed = false;
+                  catcher.safe = true;
+                  animation = 0;
+                  foodTimer = 0;
+                  gameover = false;
+                  tileList = [];
+                  foodList = [];
+
+                  for (var i = 0; i <= 9; i++) {
+                    tileList.push({ x: i * 50, y: 400 });
+                  }
+                };
               };
               tile.src = "images/tile.png";
             };
