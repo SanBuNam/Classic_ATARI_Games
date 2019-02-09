@@ -1,0 +1,36 @@
+var ctx = document.getElementById("ctx").getContext("2d");
+
+var catcherOne = new Image();
+var catcherTwo = new Image();
+var catcherThree = new Image();
+var catcherFour = new Image();
+var background = new Image();
+var blood = new Image();
+var tile = new Image();
+var food = new Image();
+
+background.onload = function() {
+  blood.onload = function() {
+    catcherOne.onload = function() {
+      catcherTwo.onload = function() {
+        catcherThree.onload = function() {
+          catcherFour.onload = function() {
+            food.onload = function() {
+              tile.onload = function() {
+                // Game Area
+              };
+              tile.src = "images/tile.png";
+            };
+            food.src = "images/food.png";
+          };
+          catcherFour.src = "images/catcher4.png";
+        };
+        catcherThree.src = "images/catcher3.png";
+      };
+      catcherTwo.src = "images/catcher2.png";
+    };
+    catcherOne.src = "images/catcher1.png";
+  };
+  blood.src = "images/blood.png";
+};
+background.src = "images/background.jpg";
