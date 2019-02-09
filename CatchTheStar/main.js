@@ -52,128 +52,108 @@ background.onload = function() {
           catcherFour.onload = function() {
             food.onload = function() {
               tile.onload = function() {
-                drawObject = function(object, x, y, width, height) {
-                  ctx.drawImage(object, x, y, width, height);
-                };
 
-                document.onkeydown = function(event) {
-                  if (event.keyCode == 37 && catcher.x > 0) {
-                    catcher.spd = -5;
-                    catcher.leftPressed = true;
-                  }
-                  if (event.keyCode == 39 && catcher.x < 500 - catcher.width) {
-                    catcher.spd = 5;
-                    catcher.rightPressed = true;
-                  }
-                  if (
-                    event.keyCode == 38 &&
-                    !catcher.onair &&
-                    catcher.y == 350
-                  ) {
-                    if (!catcher.onair) {
-                      catcher.jump = 100;
-                      catcher.onair = true;
-                    }
-                  }
-                };
+                drawObject = function(object,x,y,width,height) {
+											ctx.drawImage(object,x,y,width,height);
+										}
 
-                document.onkeyup = function(event) {
-                  if (event.keyCode == 37) {
-                    catcher.leftPressed = false;
-                  }
-                  if (event.keyCode == 39) {
-                    catcher.rightPressed = false;
-                  }
-                };
+										document.onkeydown = function(event) {
+											if (event.keyCode == 37 && catcher.x > 0) {
+												catcher.spd = -5;
+												catcher.leftPressed = true;
+											}
+											if (event.keyCode == 39 && catcher.x < 500 - catcher.width) {
+												catcher.spd = 5;
+												catcher.rightPressed = true;
+											}
+											if (event.keyCode == 38 && !catcher.onair && catcher.y== 350) {
+												if (!catcher.onair) {
+													catcher.jump = 100;
+													catcher.onair = true;
+												}
+											}
+										}
 
-                jump = function() {
-                  // Moving up
-                  if (catcher.jump > 0 && catcher.onair) {
-                    catcher.y -= catcher.jumpUnit;
-                    catcher.jump -= catcher.jumpUnit;
-                  }
-                  if (
-                    catcher.jump <= 0 &&
-                    catcher.jump > -100 &&
-                    catcher.onair
-                  ) {
-                    catcher.y += catcher.jumpUnit;
-                    catcher.jump -= catcher.jumpUnit;
-                  }
-                  if (catcher.jump <= -100 && catcher.onair) {
-                    catcher.onair = false;
-                  }
-                };
+										document.onkeyup = function(event) {
+											if (event.keyCode == 37) {
+												catcher.leftPressed = false;
+											}
+											if (event.keyCode == 39) {
+												catcher.rightPressed = false;
+											}
+										}
 
-                updateCatcherPosition = function() {
-                  if (catcher.leftPressed && catcher.x > 0) {
-                    catcher.x += catcher.spd;
-                  }
-                  if (catcher.rightPressed && catcher.x < 500 - catcher.width) {
-                    catcher.x += catcher.spd;
-                  }
-                };
+										jump = function() {
+											// Moving up
+											if (catcher.jump > 0 && catcher.onair) {
+												catcher.y -= catcher.jumpUnit;
+												catcher.jump -= catcher.jumpUnit;
+											}
+											if (catcher.jump <= 0 && catcher.jump > -100 && catcher.onair) {
+												catcher.y += catcher.jumpUnit;
+												catcher.jump -= catcher.jumpUnit;
+											}
+											if (catcher.jump <= -100 && catcher.onair) {
+												catcher.onair = false;
+											}
+										}
 
-                updatePosition = function() {
-                  ctx.clearRect(0, 0, 500, 500);
-                  ctx.drawImage(background, 0, 0, 500, 500);
-                  if (animation == 0) {
-                    drawObject(
-                      catcherOne,
-                      catcher.x,
-                      catcher.y,
-                      catcher.width,
-                      catcher.height
-                    );
-                    animation = 1;
-                  } else if (animation == 1) {
-                    drawObject(
-                      catcherTwo,
-                      catcher.x,
-                      catcher.y,
-                      catcher.width,
-                      catcher.height
-                    );
-                    animation = 0;
-                  }
+										updateCatcherPosition = function() {
+											if (catcher.leftPressed && catcher.x > 0) {
+												catcher.x += catcher.spd;
+											}
+											if (catcher.rightPressed && catcher.x < 500 - catcher.width) {
+												catcher.x += catcher.spd;
+											}
+										}
 
-                  for (var i = 0; i < tileList.length; i++) {
-                    drawObject(
-                      tile,
-                      tileList[i].x,
-                      tileList[i].y,
-                      tileObject.width,
-                      tileObject.height
-                    );
-                  }
+										updatePosition = function() {
+											ctx.clearRect(0,0,500,500);
+											ctx.drawImage(background,0,0,500,500);
+											if (catcher.onair) {
+												drawObject(catcherFour,catcher.x,catcher.y,catcher.width,catcher.height);
+											}
+											else if (animation == 0) {
+												drawObject(catcherOne,catcher.x,catcher.y,catcher.width,catcher.height);
+												animation = 1;
+												}
+											else if (animation == 1) {
+												drawObject(catcherTwo,catcher.x,catcher.y,catcher.width,catcher.height);
+												animation = 0;
+											}
 
-                  updateCatcherPosition();
-                  jump();
-                };
+											for(var i=0;i<tileList.length;i++) {
+												drawObject(tile,tileList[i].x,tileList[i].y,tileObject.width,tileObject.height);
+											}
 
-                startGame = function() {
-                  score = 0;
-                  level = 100;
-                  catcher.y = 350;
-                  catcher.x = 100;
-                  catcher.onair = false;
-                  catcher.leftPressed = false;
-                  catcher.rightPressed = false;
-                  catcher.safe = true;
-                  animation = 0;
-                  foodTimer = 0;
-                  gameover = false;
-                  tileList = [];
-                  foodList = [];
+											updateCatcherPosition();
+											jump();
+										}
 
-                  for (var i = 0; i <= 9; i++) {
-                    tileList.push({ x: i * 50, y: 400 });
-                  }
+										startGame = function() {
+											score = 0;
+											level = 100;
+											catcher.y = 350;
+											catcher.x = 100;
+											catcher.onair = false;
+											catcher.leftPressed = false;
+											catcher.rightPressed = false;
+											catcher.safe = true;
+											animation = 0;
+											foodTimer = 0;
+											gameover = false;
+											tileList = [];
+											foodList = [];
 
-                  intervalVar = setInterval(updatePosition, 10); // 100 fps game
-                };
+											for (var i=0;i<=9;i++) {
+												tileList.push({'x':i*50,'y':400});
+											}
 
-                startGame();
+											intervalVar = setInterval(updatePosition,10); // 100 fps game
+
+										}
+
+										startGame();
               };
               tile.src = "images/tile.png";
             };
