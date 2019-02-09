@@ -148,6 +148,9 @@ background.onload = function() {
                   if (catcher.rightPressed && catcher.x < 500 - catcher.width) {
                     catcher.x += catcher.spd;
                   }
+                  if (catcher.y > 450) {
+                    catcher.y = 450;
+                  }
                 };
 
                 updatePosition = function() {
@@ -221,6 +224,19 @@ background.onload = function() {
                       if (food_tile_collision(foodList[i], tileList[j])) {
                         tileList.splice(j, 1);
                       }
+                    }
+                  }
+
+                  if (!catcher.onair) {
+                    for (var i in tileList) {
+                      if (catcher_tile_collision(tileList[i])) {
+                        catcher.safe = true;
+                        break;
+                      }
+                      catcher.safe = false;
+                    }
+                    if (!catcher.safe) {
+                      catcher.y += catcher.gravity;
                     }
                   }
 
