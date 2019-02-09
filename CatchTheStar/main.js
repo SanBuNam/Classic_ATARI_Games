@@ -7,6 +7,15 @@ var background = new Image();
 var blood = new Image();
 var tile = new Image();
 var food = new Image();
+var score = 0;
+var level = 100;
+var animation = 0;
+var foodTimer = 0;
+var gameover = false;
+var intervalVar;
+var foodList = [];
+var tileList = [];
+var foodDrop = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450];
 
 var tileObject = {
   height: 20,
@@ -34,16 +43,6 @@ var foodObject = {
   spd: 3
 };
 
-var score = 0;
-var level = 100;
-var animation = 0;
-var foodTimer = 0;
-var gameover = false;
-var intervalVar;
-var foodList = [];
-var tileList = [];
-var foodDrop = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450];
-
 background.onload = function() {
   blood.onload = function() {
     catcherOne.onload = function() {
@@ -58,13 +57,26 @@ background.onload = function() {
 
                 updatePosition = function() {
                   ctx.clearRect(0, 0, 500, 500);
-                  drawObject(
-                    catcherTwo,
-                    catcher.x,
-                    catcher.y,
-                    catcher.width,
-                    catcher.height
-                  );
+                  ctx.drawImage(background, 0, 0, 500, 500);
+                  if (animation == 0) {
+                    drawObject(
+                      catcherOne,
+                      catcher.x,
+                      catcher.y,
+                      catcher.width,
+                      catcher.height
+                    );
+                    animation = 1;
+                  } else if (animation == 1) {
+                    drawObject(
+                      catcherTwo,
+                      catcher.x,
+                      catcher.y,
+                      catcher.width,
+                      catcher.height
+                    );
+                    animation = 0;
+                  }
 
                   for (var i = 0; i < tileList.length; i++) {
                     drawObject(
@@ -96,7 +108,7 @@ background.onload = function() {
                     tileList.push({ x: i * 50, y: 400 });
                   }
 
-                  intervalVar = setInterval(updatePosition, 10);
+                  intervalVar = setInterval(updatePosition, 10); // 100 fps game
                 };
                 startGame();
               };
