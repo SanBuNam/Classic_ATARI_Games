@@ -56,6 +56,27 @@ background.onload = function() {
                   ctx.drawImage(object, x, y, width, height);
                 };
 
+                updatePosition = function() {
+                  ctx.clearRect(0, 0, 500, 500);
+                  drawObject(
+                    catcherTwo,
+                    catcher.x,
+                    catcher.y,
+                    catcher.width,
+                    catcher.height
+                  );
+
+                  for (var i = 0; i < tileList.length; i++) {
+                    drawObject(
+                      tile,
+                      tileList[i].x,
+                      tileList[i].y,
+                      tileObject.width,
+                      tileObject.height
+                    );
+                  }
+                };
+
                 startGame = function() {
                   score = 0;
                   level = 100;
@@ -75,15 +96,7 @@ background.onload = function() {
                     tileList.push({ x: i * 50, y: 400 });
                   }
 
-                  for (var i = 0; i < tileList.length; i++) {
-                    drawObject(
-                      tile,
-                      tileList[i].x,
-                      tileList[i].y,
-                      tileObject.width,
-                      tileObject.height
-                    );
-                  }
+                  intervalVar = setInterval(updatePosition, 10);
                 };
                 startGame();
               };
