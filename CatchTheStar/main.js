@@ -210,6 +210,20 @@ background.onload = function() {
                     );
                   }
 
+                  for (var i in foodList) {
+                    if (food_catcher_collision(foodList[i])) {
+                      score++;
+                      foodList.splice(i, 1);
+                    }
+                  }
+                  for (var i in foodList) {
+                    for (var j in tileList) {
+                      if (food_tile_collision(foodList[i], tileList[j])) {
+                        tileList.splice(j, 1);
+                      }
+                    }
+                  }
+
                   updateFoodPosition();
                   updateCatcherPosition();
                   jump();
