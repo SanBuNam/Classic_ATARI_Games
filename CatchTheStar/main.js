@@ -44,6 +44,24 @@ var foodObject = {
   spd: 3
 };
 
+sound = function(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function() {
+    this.sound.play();
+  };
+  this.stop = function() {
+    this.sound.pause();
+  };
+};
+
+var eatingSound = new sound("sound/eat.mp3");
+var droppingSound = new sound("sound/drop.mp3");
+
 background.onload = function() {
   blood.onload = function() {
     catcherOne.onload = function() {
@@ -125,7 +143,6 @@ background.onload = function() {
                 };
 
                 jump = function() {
-                  // Moving up
                   if (catcher.jump > 0 && catcher.onair) {
                     catcher.y -= catcher.jumpUnit;
                     catcher.jump -= catcher.jumpUnit;
@@ -163,6 +180,7 @@ background.onload = function() {
                   if (catcher.y > 450) {
                     gameover = true;
                     catcher.y = 450;
+                    droppingSound.play();
                   }
                 };
 
@@ -245,6 +263,7 @@ background.onload = function() {
                   for (var i in foodList) {
                     if (food_catcher_collision(foodList[i])) {
                       score++;
+                      eatingSound.play();
                       if (score % 2 == 0) level--;
                       foodList.splice(i, 1);
                     }
@@ -300,7 +319,7 @@ background.onload = function() {
                     tileList.push({ x: i * 50, y: 400 });
                   }
 
-                  intervalVar = setInterval(updatePosition, 10); // 100 fps game
+                  intervalVar = setInterval(updatePosition, 10);
                 };
               };
               tile.src = "images/tile.png";
