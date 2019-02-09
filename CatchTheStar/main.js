@@ -52,6 +52,10 @@ background.onload = function() {
           catcherFour.onload = function() {
             food.onload = function() {
               tile.onload = function() {
+                drawObject = function(object, x, y, width, height) {
+                  ctx.drawImage(object, x, y, width, height);
+                };
+
                 startGame = function() {
                   score = 0;
                   level = 100;
@@ -70,7 +74,18 @@ background.onload = function() {
                   for (var i = 0; i <= 9; i++) {
                     tileList.push({ x: i * 50, y: 400 });
                   }
+
+                  for (var i = 0; i < tileList.length; i++) {
+                    drawObject(
+                      tile,
+                      tileList[i].x,
+                      tileList[i].y,
+                      tileObject.width,
+                      tileObject.height
+                    );
+                  }
                 };
+                startGame();
               };
               tile.src = "images/tile.png";
             };
