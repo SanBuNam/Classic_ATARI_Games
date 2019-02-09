@@ -105,6 +105,16 @@ background.onload = function() {
                   }
                 };
 
+                updateFoodPosition = function() {
+                  for (var i in foodList) {
+                    if (foodList[i].y > 500) {
+                      foodList.splice(i, 1);
+                    } else {
+                      foodList[i].y += foodObject.spd;
+                    }
+                  }
+                };
+
                 updateCatcherPosition = function() {
                   if (catcher.leftPressed && catcher.x > 0) {
                     catcher.x += catcher.spd;
@@ -154,6 +164,16 @@ background.onload = function() {
                     animation = 0;
                   }
 
+                  for (var i in foodList) {
+                    drawObject(
+                      food,
+                      foodList[i].x,
+                      foodList[i].y,
+                      foodObject.width,
+                      foodObject.height
+                    );
+                  }
+
                   for (var i = 0; i < tileList.length; i++) {
                     drawObject(
                       tile,
@@ -164,6 +184,7 @@ background.onload = function() {
                     );
                   }
 
+                  updateFoodPosition();
                   updateCatcherPosition();
                   jump();
                 };
