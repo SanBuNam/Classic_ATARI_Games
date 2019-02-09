@@ -55,6 +55,35 @@ background.onload = function() {
                   ctx.drawImage(object, x, y, width, height);
                 };
 
+                document.onkeydown = function(event) {
+                  if (event.keyCode == 37 && catcher.x > 0) {
+                    catcher.spd = -5;
+                    catcher.leftPressed = true;
+                  }
+                  if (event.keyCode == 39 && catcher.x < 500 - catcher.width) {
+                    catcher.spd = 5;
+                    catcher.rightPressed = true;
+                  }
+                };
+
+                document.onkeyup = function(event) {
+                  if (event.keyCode == 37) {
+                    catcher.leftPressed = false;
+                  }
+                  if (event.keyCode == 39) {
+                    catcher.rightPressed = false;
+                  }
+                };
+
+                updateCatcherPosition = function() {
+                  if (catcher.leftPressed && catcher.x > 0) {
+                    catcher.x += catcher.spd;
+                  }
+                  if (catcher.rightPressed && catcher.x < 500 - catcher.width) {
+                    catcher.x += catcher.spd;
+                  }
+                };
+
                 updatePosition = function() {
                   ctx.clearRect(0, 0, 500, 500);
                   ctx.drawImage(background, 0, 0, 500, 500);
@@ -87,6 +116,8 @@ background.onload = function() {
                       tileObject.height
                     );
                   }
+
+                  updateCatcherPosition();
                 };
 
                 startGame = function() {
@@ -110,6 +141,7 @@ background.onload = function() {
 
                   intervalVar = setInterval(updatePosition, 10); // 100 fps game
                 };
+
                 startGame();
               };
               tile.src = "images/tile.png";
