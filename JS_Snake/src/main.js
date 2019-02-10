@@ -1,6 +1,6 @@
 var ctx = document.getElementById("ctx").getContext("2d");
-var WIDTH = 500;
-var HEIGHT = 500;
+var WIDTH = 800;
+var HEIGHT = 800;
 var snakeList,
   foodList,
   direction,
@@ -8,19 +8,21 @@ var snakeList,
   intervalVar,
   score,
   running = false;
-ctx.font = "20px Calibri";
+ctx.font = "50px Lobster";
+ctx.fillStyle = "black";
+ctx.textBaseline = "top";
 ctx.fillText("Click me to start the game", 140, 250);
 
 var snakeBody = {
-  width: 20,
-  height: 20,
+  width: 40,
+  height: 40,
   color: "blue"
 };
 
 var food = {
-  width: 20,
-  height: 20,
-  color: "pink"
+  width: 40,
+  height: 40,
+  color: "red"
 };
 
 document.getElementById("ctx").onmousedown = function() {
@@ -46,7 +48,7 @@ document.onkeydown = function(event) {
 drawSnake = function(sb, i) {
   ctx.save();
   if (i === 0) {
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "red";
   } else {
     ctx.fillStyle = snakeBody.color;
   }
@@ -71,35 +73,35 @@ testCollision = function(rect1, rect2) {
 };
 
 testCollisionSnake = function(snake1, snake2) {
-  return Math.abs(snake1.x - snake2.x) < 5 && Math.abs(snake1.y - snake2.y) < 5;
+  return Math.abs(snake1.x - snake2.x) < 8 && Math.abs(snake1.y - snake2.y) < 8;
 };
 
 updateSnakeList = function() {
   for (var i = snakeList.length - 1; i >= 0; i--) {
     if (direction == 0) {
       if (i == 0) {
-        snakeList[i].x = snakeList[i].x - 5;
+        snakeList[i].x = snakeList[i].x - 10;
       } else {
         snakeList[i].x = snakeList[i - 1].x;
         snakeList[i].y = snakeList[i - 1].y;
       }
     } else if (direction == 1) {
       if (i == 0) {
-        snakeList[i].y = snakeList[i].y - 5;
+        snakeList[i].y = snakeList[i].y - 10;
       } else {
         snakeList[i].x = snakeList[i - 1].x;
         snakeList[i].y = snakeList[i - 1].y;
       }
     } else if (direction == 2) {
       if (i == 0) {
-        snakeList[i].x = snakeList[i].x + 5;
+        snakeList[i].x = snakeList[i].x + 10;
       } else {
         snakeList[i].x = snakeList[i - 1].x;
         snakeList[i].y = snakeList[i - 1].y;
       }
     } else if (direction == 3) {
       if (i == 0) {
-        snakeList[i].y = snakeList[i].y + 5;
+        snakeList[i].y = snakeList[i].y + 10;
       } else {
         snakeList[i].x = snakeList[i - 1].x;
         snakeList[i].y = snakeList[i - 1].y;
@@ -109,17 +111,17 @@ updateSnakeList = function() {
 };
 
 checkSnakePosition = function() {
-  if (snakeList[0].x > 500) {
+  if (snakeList[0].x > 800) {
     snakeList[0].x = 0;
   }
   if (snakeList[0].x < 0) {
-    snakeList[0].x = 500;
+    snakeList[0].x = 800;
   }
-  if (snakeList[0].y > 500) {
+  if (snakeList[0].y > 800) {
     snakeList[0].y = 0;
   }
   if (snakeList[0].y < 0) {
-    snakeList[0].y = 500;
+    snakeList[0].y = 800;
   }
 };
 
@@ -137,8 +139,8 @@ isGameOver = function() {
 updateSnakePosition = function() {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   while (eaten) {
-    var pos_x = Math.random() * 485 + 5;
-    var pos_y = Math.random() * 485 + 5;
+    var pos_x = Math.random() * 785 + 5;
+    var pos_y = Math.random() * 785 + 5;
     foodList[0] = { x: pos_x, y: pos_y };
     eaten = false;
   }
@@ -165,7 +167,7 @@ updateSnakePosition = function() {
     }
     snakeList.unshift({ x: new_X, y: new_Y });
   }
-  ctx.fillText("Score: " + score, 420, 30);
+  ctx.fillText("Score: " + score, 600, 30);
   isGameOver();
   checkSnakePosition();
   updateSnakeList();
@@ -178,5 +180,5 @@ startGame = function() {
   eaten = true;
   score = 0;
   running = true;
-  intervalVar = setInterval(updateSnakePosition, 20);
+  intervalVar = setInterval(updateSnakePosition, 15);
 };
