@@ -68,8 +68,8 @@ sound = function(src) {
   };
 };
 
-var eatingSound = new sound("sound/eat.mp3");
-var droppingSound = new sound("sound/drop.mp3");
+var eatingSound = new sound("./src/sound/eat.mp3");
+var droppingSound = new sound("./src/sound/drop.mp3");
 
 background.onload = function() {
   blood.onload = function() {
@@ -81,9 +81,9 @@ background.onload = function() {
               tile.onload = function() {
                 fruit.onload = function() {
                   ctx.drawImage(background, 0, 0, 500, 500);
-                  ctx.strokeStyle = "#FFFFFF";
-                  ctx.font = "30px Calibri";
-                  ctx.strokeText("Click here to start the game", 80, 250);
+                  ctx.fillStyle = "blue";
+                  ctx.font = "bolder 30px Calibri";
+                  ctx.fillText("Click here to start the game", 80, 250);
 
                   drawObject = function(object, x, y, width, height) {
                     ctx.drawImage(object, x, y, width, height);
@@ -228,10 +228,10 @@ background.onload = function() {
                     ctx.globalAlpha = 0.6;
                     drawObject(blood, 100, 100, 300, 300);
                     ctx.globalAlpha = 1.0;
-                    ctx.strokeStyle = "#FFFFFF";
-                    ctx.font = "30px Calibri";
-                    ctx.strokeText("Game Over", 180, 200);
-                    ctx.strokeText("Click to restart", 160, 250);
+                    ctx.fillStyle = "blue";
+                    ctx.font = "bolder 30px Calibri";
+                    ctx.fillText("Thank you", 180, 250);
+                    ctx.fillText("Click to restart", 160, 300);
                     ctx.restore();
                     clearInterval(intervalVar);
                   };
@@ -366,8 +366,8 @@ background.onload = function() {
                       }
 
                       drawObject(food, 440, 10, 20, 20);
-                      ctx.fillStyle = "#FFFFFF";
-                      ctx.font = "20px Calibri";
+                      ctx.fillStyle = "blue";
+                      ctx.font = "bolder 20px Calibri";
                       ctx.fillText(score, 465, 27);
                       ctx.fillText("Level " + (100 - level + 1), 10, 27);
                       updateFruitPosition();
@@ -376,7 +376,7 @@ background.onload = function() {
                       jump();
                     } else {
                       ctx.save();
-                      ctx.strokeStyle = "#FFFFFF";
+                      ctx.strokeStyle = "blue";
                       ctx.font = "30px Calibri";
                       ctx.strokeText("Game Paused", 165, 250);
                       ctx.restore();
@@ -404,23 +404,23 @@ background.onload = function() {
                       tileList.push({ x: i * 50, y: 400 });
                     }
 
-                    intervalVar = setInterval(updatePosition, 10); // 100 fps game
+                    intervalVar = setInterval(updatePosition, 10);
                   };
                 };
-                fruit.src = "images/fruit.png";
+                fruit.src = "./src/images/poison.png";
               };
-              tile.src = "images/tile.png";
+              tile.src = "./src/images/tile.png";
             };
-            food.src = "images/food.png";
+            food.src = "./src/images/star.png";
           };
-          catcherFour.src = "images/catcher4.png";
+          catcherFour.src = "./src/images/catcher4.png";
         };
-        catcherThree.src = "images/catcher3.png";
+        catcherThree.src = "./src/images/catcher3.png";
       };
-      catcherTwo.src = "images/catcher2.png";
+      catcherTwo.src = "./src/images/catcher2.png";
     };
-    catcherOne.src = "images/catcher1.png";
+    catcherOne.src = "./src/images/catcher1.png";
   };
-  blood.src = "images/blood.png";
+  blood.src = "./src/images/gameOver.png";
 };
-background.src = "images/background.jpg";
+background.src = "./src/images/starBackground.jpg";

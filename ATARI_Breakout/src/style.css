@@ -1,0 +1,8 @@
+@import url(https://fonts.googleapis.com/css?family=Major+Mono+Display|ZCOOL+KuaiLe);
+
+#ctx {
+  background-image: url("./breakoutBackground.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

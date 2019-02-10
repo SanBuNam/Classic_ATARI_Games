@@ -2,8 +2,11 @@ var ctx = document.getElementById("ctx").getContext("2d");
 var WIDTH = 500;
 var HEIGHT = 500;
 var numOfTiles, tileList, score, intervalVar, running, hitCount;
-ctx.font = "20px Calibri";
-ctx.fillText("Click me to start the game", 150, 250);
+ctx.font = "bold 30px ZCOOL KuaiLe";
+ctx.fillStyle = "Crimson";
+ctx.fillText("ATARI 🎮 Breakout", 100, 200);
+ctx.fillStyle = "yellow";
+ctx.fillText("Click me to start the game", 50, 250);
 
 var ball = {
   x: 0,
@@ -19,7 +22,7 @@ var base = {
   y: 400,
   height: 20,
   width: 100,
-  color: "navy",
+  color: "lime",
   pressingLeft: false,
   pressingRight: false,
   lives: 3
@@ -28,7 +31,7 @@ var base = {
 var tile = {
   height: 20,
   width: 40,
-  color: "green"
+  color: "blue"
 };
 
 running = false;
@@ -146,7 +149,7 @@ isGameOver = function() {
   if (base.lives < 0 || score == 330) {
     clearInterval(intervalVar);
     running = false;
-    ctx.fillText("Game Over! Click to restart", 150, 250);
+    ctx.fillText("Game Over! Click to restart", 50, 250);
   }
 };
 
@@ -168,8 +171,8 @@ update = function() {
     }
   }
 
-  ctx.fillText("Score: " + score, 5, 490);
-  ctx.fillText("Lives: " + base.lives, 430, 490);
+  ctx.fillText("Score: " + score, 20, 490);
+  ctx.fillText("Lives: " + base.lives, 350, 490);
   isGameOver();
   updateBarPosition();
   updateBallPosition();
